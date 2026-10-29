@@ -1,0 +1,21 @@
+{
+  "name": "aman-brend-shop",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "migrate": "node --env-file-if-exists=.env scripts/migrate.mjs",
+    "storage:setup": "node --env-file-if-exists=.env scripts/setup-storage.mjs",
+    "seed": "node --env-file-if-exists=.env seed.mjs",
+    "test": "node --test --test-concurrency=1 test/*.test.mjs",
+    "test:unit": "node --test test/domain.test.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "pg": "8.16.3"
+  }
+}
