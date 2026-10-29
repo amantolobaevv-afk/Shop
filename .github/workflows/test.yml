@@ -32,8 +32,10 @@ jobs:
         with:
           node-version: "24"
       - run: npm install --ignore-scripts
+      - run: node -e "console.log('LOCKFILE_BEGIN');console.log(JSON.stringify(require('./package-lock.json')));console.log('LOCKFILE_END')"
       - run: npm test
       - uses: actions/upload-artifact@v4
         with:
           name: dependency-lock
           path: package-lock.json
+
