@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     branch: backend/shop-api
-    buildCommand: npm install --omit=dev --ignore-scripts
+    buildCommand: npm ci --omit=dev --ignore-scripts
     startCommand: npm run migrate && npm start
     healthCheckPath: /api/health
     envVars:

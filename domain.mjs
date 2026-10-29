@@ -15,5 +15,5 @@ export function validateProduct(p){
  if(!Array.isArray(p.images)||p.images.length<1||p.images.length>6)fail(400,'Добавьте от 1 до 6 фото');
  result.images=p.images.map(s=>{if(typeof s!=='string'||s.length>500||!(/^\/uploads\/[a-f0-9]{32}\.(jpg|png|webp)$/.test(s)||/^https:\/\/images\.unsplash\.com\/photo-[a-zA-Z0-9-]+(?:\?[a-zA-Z0-9=&%-]+)?$/.test(s)))fail(400,'Загрузите фото через панель управления');return s});
  if(!Array.isArray(p.variants)||p.variants.length<1||p.variants.length>100)fail(400,'Добавьте варианты товара');
- const unique=new Set();result.variants=p.variants.map(v=>{const color=text(v.color,1,60,'цвет');if(!sizes.includes(v.size))fail(400,'Недопустимый размер');const k=JSON.stringify([color,v.size]);if(unique.has(k))fail(400,'Повтор цвета и размера');unique.add(k);return {color,size:v.size,stock:integer(v.stock,0,100000,'остаток')}});return result;
+ const unique=new Set();result.variants=p.variants.map(v=>{if(!v||typeof v!=='object')fail(400,'Некорректный вариант товара');const color=text(v.color,1,60,'цвет');if(!sizes.includes(v.size))fail(400,'Недопустимый размер');const k=JSON.stringify([color,v.size]);if(unique.has(k))fail(400,'Повтор цвета и размера');unique.add(k);return {color,size:v.size,stock:integer(v.stock,0,100000,'остаток')}});return result;
 }

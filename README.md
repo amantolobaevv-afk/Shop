@@ -31,7 +31,7 @@
 
 `NODE_ENV=production`, `HOST=0.0.0.0` жана Node 24 Blueprint'те бар. `PORT` Render тарабынан берилет. `PUBLIC_ORIGIN` көрсөтүлбөсө, Render берген `RENDER_EXTERNAL_URL` автоматтык колдонулат. Өз домениңизди кошкондо `PUBLIC_ORIGIN=https://your-domain.example` деп так коюңуз (аягында slash жок).
 
-Build: `npm install --omit=dev --ignore-scripts`.
+Build: `npm ci --omit=dev --ignore-scripts`.
 Start: `npm run migrate && npm start`.
 Health check: `/api/health`.
 
@@ -44,7 +44,7 @@ TLS сертификат текшерүүсү дайыма күйүк. Эгер 
 Node **24.15+ (24 LTS)** талап кылынат.
 
 ```sh
-npm install --ignore-scripts
+npm ci --ignore-scripts
 ```
 
 `.env.example` → `.env` көчүрүп, Supabase маалыматын жана парольду толтуруңуз:
