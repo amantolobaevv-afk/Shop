@@ -18,5 +18,5 @@ export async function migrate(pool){
  const found=await c.query('SELECT version FROM aman_shop.schema_migrations WHERE version=1');
  if(!found.rows.length){await c.query(await readFile(new URL('./migrations/001_shop.sql',import.meta.url),'utf8'));await c.query('INSERT INTO aman_shop.schema_migrations(version) VALUES(1)')}
  await c.query('REVOKE ALL ON SCHEMA aman_shop FROM PUBLIC');await c.query('REVOKE ALL ON aman_shop.schema_migrations FROM PUBLIC');await c.query('COMMIT');
- }catch(e){await c.query('ROLLBACK');throw e}finally{c.release()}
+ }catch(e){try{await c.query('ROLLBACK')}catch{}throw e}finally{c.release()}
 }

@@ -1,2 +1,4 @@
 import {createPool,migrate} from '../database.mjs';
-const pool=createPool();try{await migrate(pool);console.log('PostgreSQL schema ready.')}catch{console.error('Migration failed. Check DATABASE_URL, TLS certificate and schema permissions.');process.exitCode=1}finally{await pool.end()}
+import {databaseDiagnostic,databaseContext} from './database-diagnostic.mjs';
+let pool;
+try{pool=createPool();await migrate(pool);console.log('PostgreSQL schema ready.')}catch(error){const diagnostic=databaseDiagnostic(error);console.error(`Migration failed [${diagnostic.kind}]. ${diagnostic.hint}`);console.error('Database configuration check: '+JSON.stringify(databaseContext()));process.exitCode=1}finally{if(pool)try{await pool.end()}catch{console.error('Database connection cleanup failed.')}}
