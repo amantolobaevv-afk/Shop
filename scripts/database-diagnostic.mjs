@@ -3,6 +3,8 @@ const messages={
  DB_AUTH:'Database authentication failed. Re-copy the Session pooler URL and use the database password, not the Supabase API key. URL-encode special characters in the password.',
  DB_POOLER_USER:'Supabase pooler did not recognize the tenant/user. Copy Connect > Session pooler (port 5432); keep the exact postgres.PROJECT_REF username.',
  DB_TLS:'Database TLS certificate verification failed. Add the Supabase CA certificate as DATABASE_CA_CERT in Render. Do not disable certificate verification.',
+ DB_CERT_FORMAT:'DATABASE_CA_CERT is not a valid PEM certificate. Paste the entire downloaded Supabase CA certificate, including BEGIN/END lines, with no surrounding quotes.',
+ DB_AUTH_EXCHANGE:'Pooler authentication exchange failed. Verify the exact Session pooler username and URL-encoded database password. If the password was just rotated, allow the pooler to refresh before retrying.',
  DB_DNS:'Database hostname could not be resolved. Re-copy the hostname from Supabase Connect > Session pooler.',
  DB_NETWORK:'Database connection could not be established. Use the Session pooler on port 5432; check the project is running and database network restrictions allow Render.',
  DB_TIMEOUT:'Database connection or migration timed out. Check the Supabase project is active, the pooler URL and network restrictions.',
@@ -18,13 +20,19 @@ export function databaseDiagnostic(error){
  if(/tenant or user not found/i.test(message))kind='DB_POOLER_USER';
  else if(codes.some(c=>['28P01','28000'].includes(c)))kind='DB_AUTH';
  else if(codes.some(c=>['SELF_SIGNED_CERT_IN_CHAIN','DEPTH_ZERO_SELF_SIGNED_CERT','UNABLE_TO_VERIFY_LEAF_SIGNATURE','UNABLE_TO_GET_ISSUER_CERT_LOCALLY','CERT_HAS_EXPIRED','ERR_TLS_CERT_ALTNAME_INVALID'].includes(c)))kind='DB_TLS';
+ else if(codes.some(c=>['ERR_OSSL_PEM_NO_START_LINE','ERR_OSSL_PEM_BAD_BASE64_DECODE','ERR_OSSL_ASN1_WRONG_TAG','ERR_OSSL_ASN1_TOO_LONG'].includes(c)))kind='DB_CERT_FORMAT';
+ else if(/server signature is missing|SASL.*SCRAM|SCRAM.*authentication/i.test(message))kind='DB_AUTH_EXCHANGE';
  else if(codes.some(c=>['ENOTFOUND','EAI_AGAIN'].includes(c)))kind='DB_DNS';
  else if(codes.some(c=>['ETIMEDOUT','57014','55P03'].includes(c))||/connection timeout|connection timed out|timeout exceeded/i.test(message))kind='DB_TIMEOUT';
  else if(codes.some(c=>['ECONNREFUSED','ECONNRESET','ENETUNREACH','EHOSTUNREACH'].includes(c)))kind='DB_NETWORK';
  else if(codes.includes('42501'))kind='DB_PERMISSIONS';
  else if(codes.includes('3D000'))kind='DB_NAME';
  else if(codes.includes('ERR_INVALID_URL')||/DATABASE_URL|TLS cannot be disabled/i.test(message))kind='DB_CONFIG';
- return {kind,hint:messages[kind]};
+ const nodeCodes=new Set(['ENOTFOUND','EAI_AGAIN','ETIMEDOUT','ECONNREFUSED','ECONNRESET','ENETUNREACH','EHOSTUNREACH','SELF_SIGNED_CERT_IN_CHAIN','DEPTH_ZERO_SELF_SIGNED_CERT','UNABLE_TO_VERIFY_LEAF_SIGNATURE','UNABLE_TO_GET_ISSUER_CERT_LOCALLY','CERT_HAS_EXPIRED','ERR_TLS_CERT_ALTNAME_INVALID','ERR_INVALID_URL','ERR_OSSL_PEM_NO_START_LINE','ERR_OSSL_PEM_BAD_BASE64_DECODE','ERR_OSSL_ASN1_WRONG_TAG','ERR_OSSL_ASN1_TOO_LONG']);
+ const code=codes.find(c=>typeof c==='string'&&(nodeCodes.has(c)||/^(?:[0-9]{2}[A-Z0-9]{3}|XX[0-9]{3}|P[0-9]{4})$/.test(c)))||'UNAVAILABLE';
+ const steps=new Set(['connect','begin','migration_lock','create_schema','migration_table','read_version','read_migration_file','apply_schema','record_version','schema_permissions','migration_permissions','commit']);
+ const step=all.map(e=>e.migrationStep).find(s=>steps.has(s))||(kind==='DB_CONFIG'?'configuration':'unknown');
+ return {kind,hint:messages[kind],code,step};
 }
 export function databaseContext(env=process.env){
  const result={urlConfigured:!!env.DATABASE_URL};if(!env.DATABASE_URL)return result;

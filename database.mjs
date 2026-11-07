@@ -12,11 +12,17 @@ export function poolConfig(env=process.env){
 }
 export function createPool(env=process.env){const pool=new pg.Pool(poolConfig(env));pool.on('error',()=>console.error('Database connection error'));return pool}
 export async function migrate(pool){
- const c=await pool.connect();
- try{await c.query('BEGIN');await c.query('SELECT pg_advisory_xact_lock(75759025)');await c.query('CREATE SCHEMA IF NOT EXISTS aman_shop');
- await c.query('CREATE TABLE IF NOT EXISTS aman_shop.schema_migrations(version INTEGER PRIMARY KEY,applied_at TIMESTAMPTZ NOT NULL DEFAULT now())');
- const found=await c.query('SELECT version FROM aman_shop.schema_migrations WHERE version=1');
- if(!found.rows.length){await c.query(await readFile(new URL('./migrations/001_shop.sql',import.meta.url),'utf8'));await c.query('INSERT INTO aman_shop.schema_migrations(version) VALUES(1)')}
- await c.query('REVOKE ALL ON SCHEMA aman_shop FROM PUBLIC');await c.query('REVOKE ALL ON aman_shop.schema_migrations FROM PUBLIC');await c.query('COMMIT');
- }catch(e){try{await c.query('ROLLBACK')}catch{}throw e}finally{c.release()}
+ let c,step='connect';
+ try{c=await pool.connect();
+ const run=async(label,sql)=>{step=label;return c.query(sql)};
+ await run('begin','BEGIN');
+ await run('migration_lock','SELECT pg_advisory_xact_lock(75759025)');
+ await run('create_schema','CREATE SCHEMA IF NOT EXISTS aman_shop');
+ await run('migration_table','CREATE TABLE IF NOT EXISTS aman_shop.schema_migrations(version INTEGER PRIMARY KEY,applied_at TIMESTAMPTZ NOT NULL DEFAULT now())');
+ const found=await run('read_version','SELECT version FROM aman_shop.schema_migrations WHERE version=1');
+ if(!found.rows.length){step='read_migration_file';const sql=await readFile(new URL('./migrations/001_shop.sql',import.meta.url),'utf8');await run('apply_schema',sql);await run('record_version','INSERT INTO aman_shop.schema_migrations(version) VALUES(1)')}
+ await run('schema_permissions','REVOKE ALL ON SCHEMA aman_shop FROM PUBLIC');
+ await run('migration_permissions','REVOKE ALL ON aman_shop.schema_migrations FROM PUBLIC');
+ await run('commit','COMMIT');
+ }catch(cause){if(c)try{await c.query('ROLLBACK')}catch{}const error=new Error('Database migration step failed',{cause});error.migrationStep=step;throw error}finally{if(c)c.release()}
 }
