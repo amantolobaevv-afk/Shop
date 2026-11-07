@@ -1,0 +1,3 @@
+import {SupabaseStorage} from '../storage.mjs';
+const storage=new SupabaseStorage();
+try{const existing=await storage.client.storage.getBucket(storage.bucket);if(existing.error){if(!['404','400'].includes(String(existing.error.statusCode)))throw Error('Cannot inspect bucket');const result=await storage.client.storage.createBucket(storage.bucket,{public:false,fileSizeLimit:2000000,allowedMimeTypes:['image/jpeg','image/png','image/webp']});if(result.error)throw result.error}await storage.check();console.log('Private image bucket ready.')}catch{console.error('Storage setup failed. Verify project URL, server key and bucket configuration.');process.exitCode=1}

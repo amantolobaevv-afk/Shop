@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: aman-brend-shop
+    runtime: node
+    plan: free
+    branch: backend/shop-api
+    buildCommand: npm ci --omit=dev --ignore-scripts
+    startCommand: npm run migrate && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: TRUST_PROXY_HOPS
+        value: "1"
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: product-images
+      - key: ADMIN_PASSWORD
+        sync: false

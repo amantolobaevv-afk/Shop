@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {validateProduct,text,integer,digest} from '../domain.mjs';
+const valid={name:'Рубашка',category:'Рубашки',price:5900,description:'Хлопок',material:'Хлопок',images:['/uploads/'+'a'.repeat(32)+'.jpg'],variants:[{color:'Белый',size:'M',stock:2}]};
+test('product validation normalizes supported data',()=>{const p=validateProduct({...valid,name:'  Рубашка  '});assert.equal(p.name,'Рубашка');assert.equal(p.variants[0].stock,2);assert.equal(p.active,true)});
+test('prices and quantities reject negative, fractional and unsafe values',()=>{for(const price of [0,-1,1.5,NaN,Infinity,10000001])assert.throws(()=>validateProduct({...valid,price}),e=>e.status===400);assert.throws(()=>integer('2',1,99,'qty'));assert.equal(integer(2,1,99,'qty'),2)});
+test('photo validation rejects scripts, arbitrary origins and paths',()=>{for(const src of ['javascript:alert(1)','https://evil.example/x.jpg','/uploads/../.env','data:image/svg+xml;base64,abc'])assert.throws(()=>validateProduct({...valid,images:[src]}),e=>e.status===400)});
+test('sizes, stock and duplicate variants are validated',()=>{for(const variants of [[],[null],[{color:'Белый',size:'XS',stock:2}],[{color:'Белый',size:'M',stock:-1}],[...valid.variants,...valid.variants]])assert.throws(()=>validateProduct({...valid,variants}),e=>e.status===400)});
+test('missing or malformed product fields fail with validation errors',()=>{for(const p of [null,[],{}, {...valid,name:''},{...valid,category:'unknown'}])assert.throws(()=>validateProduct(p),e=>e.status===400);assert.throws(()=>text('a',2,5,'name'));assert.equal(text(' hi ',1,4,'name'),'hi')});
+test('tokens are consistently hashed',()=>{assert.equal(digest('test').length,64);assert.equal(digest('test'),digest('test'));assert.notEqual(digest('test'),digest('other'))});

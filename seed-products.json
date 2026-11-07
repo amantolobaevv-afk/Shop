@@ -1,0 +1,470 @@
+[
+  {
+    "name": "Пальто прямого кроя",
+    "category": "Верхняя одежда",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 18900,
+    "images": [
+      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Тёплый бежевый",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Тёплый бежевый",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Тёплый бежевый",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Тёплый бежевый",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Тёплый бежевый",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Джемпер Essential",
+    "category": "Трикотаж",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 6900,
+    "images": [
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Молочный",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Рубашка Oxford",
+    "category": "Рубашки",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 5900,
+    "images": [
+      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Белый",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Брюки Modern Fit",
+    "category": "Брюки",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 7900,
+    "images": [
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Графит",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Графит",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Графит",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Графит",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Графит",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Куртка Urban",
+    "category": "Верхняя одежда",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 15900,
+    "images": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Чёрный",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Футболка Base",
+    "category": "Трикотаж",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 2900,
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Белый",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Белый",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Рубашка Linen",
+    "category": "Рубашки",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 6500,
+    "images": [
+      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Натуральный бежевый",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Натуральный бежевый",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Натуральный бежевый",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Натуральный бежевый",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Натуральный бежевый",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Поло Signature",
+    "category": "Трикотаж",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 4900,
+    "images": [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Молочный",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Молочный",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Кардиган Soft Knit",
+    "category": "Трикотаж",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 8900,
+    "images": [
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Светлый песочный",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Светлый песочный",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Светлый песочный",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Светлый песочный",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Светлый песочный",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Брюки Chino",
+    "category": "Брюки",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 7200,
+    "images": [
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Тёмный графит",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Тёмный графит",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Тёмный графит",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Тёмный графит",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Тёмный графит",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Пиджак Modern Tailor",
+    "category": "Верхняя одежда",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 16900,
+    "images": [
+      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Песочный",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Песочный",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Песочный",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Песочный",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Песочный",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  },
+  {
+    "name": "Куртка Weekend",
+    "category": "Верхняя одежда",
+    "description": "Демонстрационная модель. Замените описание и фотографии перед продажей.",
+    "material": "Уточняется",
+    "price": 12900,
+    "images": [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=85"
+    ],
+    "demo": true,
+    "active": true,
+    "variants": [
+      {
+        "color": "Чёрный",
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "M",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "L",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "color": "Чёрный",
+        "size": "XXL",
+        "stock": 0
+      }
+    ]
+  }
+]
