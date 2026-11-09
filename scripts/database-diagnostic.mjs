@@ -39,3 +39,24 @@ export function databaseContext(env=process.env){
  try{const u=new URL(env.DATABASE_URL);result.connection=u.hostname.includes('.pooler.supabase.')?'pooler':u.hostname.startsWith('db.')?'direct':'other';result.port=u.port||'5432';if(!/^\d{1,5}$/.test(result.port))result.port='invalid';result.placeholderDetected=/YOUR[-_ ]?PASSWORD|PROJECT[_-]?REF|URL_ENCODED_PASSWORD|POOLER_HOST/i.test(decodeURIComponent(u.href));result.caConfigured=!!env.DATABASE_CA_CERT;}catch{result.urlValid=false}
  return result;
 }
+
+// Only used for a failed connect(), before any customer SQL can run.
+// Fail closed if the configured URL cannot be parsed. Redact configured secrets
+// (including decoded/encoded credentials) before truncating or emitting text.
+export function safeConnectionReason(error,env=process.env){
+ let url;try{url=new URL(env.DATABASE_URL);if(!['postgres:','postgresql:'].includes(url.protocol))return 'Connection details withheld: invalid database URL.'}catch{return 'Connection details withheld: invalid database URL.'}
+ const secrets=new Set();const add=value=>{if(typeof value!=='string'||!value)return;secrets.add(value);try{secrets.add(decodeURIComponent(value))}catch{}try{secrets.add(encodeURIComponent(value))}catch{}};
+ for(const [key,value] of Object.entries(env))if(/PASSWORD|SECRET|TOKEN|KEY|DATABASE_URL|DATABASE_CA_CERT|SUPABASE_URL/i.test(key))add(value);
+ for(const value of [url.username,url.password,url.hostname,url.pathname])add(value);
+ const list=[],seen=new Set();function visit(e,depth=0){if(!e||depth>4||seen.has(e))return;seen.add(e);if(typeof e.message==='string')list.push(e);if(e.cause)visit(e.cause,depth+1);if(Array.isArray(e.errors))for(const c of e.errors.slice(0,4))visit(c,depth+1)}visit(error);
+ const source=list.find(e=>e.code==='XX000')||list.at(-1);if(!source)return 'No connection error message was provided.';
+ let reason=source.message;
+ for(const value of [...secrets].sort((a,b)=>b.length-a.length))reason=reason.split(value).join('[REDACTED]');
+ reason=reason.replace(/\b(?:postgres(?:ql)?|https?):\/\/[^\s]+/gi,'[URL REDACTED]')
+ .replace(/-----BEGIN[\s\S]*?-----END[^-]*-----/g,'[CERTIFICATE REDACTED]')
+ .replace(/\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g,'[TOKEN REDACTED]')
+ .replace(/\bsb_(?:secret|publishable)_[A-Za-z0-9_-]+/g,'[KEY REDACTED]')
+ .replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g,'[QUOTED VALUE REDACTED]')
+ .replace(/[\x00-\x1f\x7f]/g,' ').trim();
+ return reason.slice(0,600)||'No connection error message was provided.';
+}
