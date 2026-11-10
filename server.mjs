@@ -36,6 +36,7 @@ export async function createApp({password=process.env.ADMIN_PASSWORD,origin=proc
    if(p==='/api/auth/session'&&method==='GET'){const s=await session(req,false);return send(200,{authenticated:!!s,csrf:s?.csrf||null})}
    if(p==='/api/auth/logout'&&method==='POST'){const s=await session(req);if(req.headers['x-csrf-token']!==s.csrf)fail(403,'Обновите страницу');await store.deleteSession(s.hash);return send(200,{ok:true},{'Set-Cookie':cookie('',0)})}
    if(p.startsWith('/api/admin/')){const s=await session(req);if(method!=='GET'&&req.headers['x-csrf-token']!==s.csrf)fail(403,'Обновите страницу');
+    if(p==='/api/admin/demo-catalog'&&method==='POST'){await body(req);const data=JSON.parse(await readFile(new URL('./seed-products.json',import.meta.url),'utf8'));return send(201,await store.seedDemoCatalog(data))}
     if(p==='/api/admin/products'&&method==='GET'){await store.expire();return send(200,await store.list({admin:true}))}
     if(p==='/api/admin/products'&&method==='POST')return send(201,await store.saveProduct(await body(req)));
     const product=p.match(/^\/api\/admin\/products\/(\d+)$/);if(product&&method==='PUT')return send(200,await store.saveProduct(await body(req),Number(product[1])));if(product&&method==='DELETE'){await store.removeProduct(Number(product[1]));return send(200,{ok:true})}
