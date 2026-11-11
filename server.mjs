@@ -50,7 +50,7 @@ export async function createApp({password=process.env.ADMIN_PASSWORD,origin=proc
    const order=p.match(/^\/api\/orders\/([a-f0-9]{24})$/);if(order&&method==='GET'){await limited('status:'+ip,100,60000);return send(200,await store.getOrder(order[1],String(req.headers['x-order-token']||'')))}
    if(p==='/api/payments/checkout'&&method==='POST')fail(503,'Онлайн-оплата пока не подключена. Согласуйте оплату с менеджером.');
    if(p.startsWith('/api/'))fail(404,'Адрес API не найден');if(method!=='GET')fail(405,'Метод не поддерживается');
-   let file;if(/^\/uploads\/[a-f0-9]{32}\.(jpg|png|webp)$/.test(p)){const bytes=await storage.download(path.basename(p));res.writeHead(200,{'Content-Type':mime[path.extname(p)],'Cache-Control':'public, max-age=3600'});return res.end(bytes)}else{const name=p==='/'?'index.html':p.slice(1);if(!/^[a-zA-Z0-9_-]+\.(html|css|js)$/.test(name))fail(404,'Страница не найдена');file=path.join(root,'public',name)}
+   let file;if(/^\/uploads\/[a-f0-9]{32}\.(jpg|png|webp)$/.test(p)){const bytes=await storage.download(path.basename(p));res.writeHead(200,{'Content-Type':mime[path.extname(p)],'Cache-Control':'public, max-age=3600'});return res.end(bytes)}else{const name=p==='/'?'index.html':p.slice(1);if(!/^[a-zA-Z0-9_-]+\.(html|css|js|jpg|png|webp)$/.test(name))fail(404,'Страница не найдена');file=path.join(root,'public',name)}
    let content;try{content=await readFile(file)}catch{fail(404,'Страница не найдена')}res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream'});res.end(content);
   }catch(e){if(e instanceof ApiError)return send(e.status,{error:e.message});console.error('Request failed:',e.name);send(500,{error:'Ошибка сервера. Попробуйте позже.'})}
  }

@@ -8,7 +8,7 @@ async function setup(){
  const listeners={};const node=()=>({value:'',innerHTML:'',textContent:'',disabled:true,hidden:false});
  const nodes=Object.fromEntries(['cart','count','cartItems','total','checkout','closeCart','continue','order'].map(id=>['#'+id,node()]));
  nodes['#cart'].showModal=function(){this.open=true};nodes['#cart'].close=function(){this.open=false};
- const buttons=[node(),node()];for(const kind of ['color','size','choice-hint'])nodes[`[data-${kind}="1"]`]=node();
+ const buttons=[node(),node()];buttons.forEach(b=>{b.dataset={};b.classList={toggle(){}};b.setAttribute=()=>{}});for(const kind of ['color','size','choice-hint'])nodes[`[data-${kind}="1"]`]=node();
  const context=vm.createContext({document:{querySelector:s=>nodes[s]||null,querySelectorAll:()=>buttons,addEventListener:(type,fn)=>(listeners[type]??=[]).push(fn)},$:s=>nodes[s]||null,esc,money:n=>n+' som',localStorage:{getItem:()=>null,setItem(){}},location:{hash:''},setTimeout,clearTimeout,URLSearchParams});
  await vm.runInContext(`(async()=>{${source}\n globalThis.ui={choices,syncChoice,addProduct,setProducts:p=>products=p,getCart:()=>cart};})()`,context);
  return {ui:context.ui,nodes,buttons,click:target=>listeners.click.forEach(fn=>fn({target}))};
@@ -34,4 +34,9 @@ test('cart opens empty, buys selected variant, enforces stock, changes quantity 
 test('zero-stock demo explains unavailability and cannot be purchased',async()=>{
  const {ui,nodes,buttons}=await setup();const p={...product,demo:true,variants:[{...product.variants[0],stock:0}]};ui.setProducts([p]);assert.match(ui.choices(p),/Демонстрационная модель/);
  nodes['[data-size="1"]'].value='11';ui.syncChoice(1,true);ui.addProduct(1);assert.ok(buttons.every(b=>b.disabled));assert.equal(ui.getCart().length,0);
+});
+test('size chip selects its variant and enables add-to-cart',async()=>{
+ const {ui,nodes,buttons,click}=await setup();ui.setProducts([product]);
+ click({closest:s=>s==='[data-variant]'?{disabled:false,dataset:{product:'1',variant:'12'}}:null});
+ assert.equal(nodes['[data-size="1"]'].value,'12');assert.equal(nodes['[data-color="1"]'].value,'White');assert.ok(buttons.every(b=>!b.disabled));ui.addProduct(1);assert.equal(ui.getCart()[0].variantId,12);
 });
